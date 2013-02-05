@@ -1,0 +1,103 @@
+	<div class="filterPanel" ng-init="initData()">
+		<table>
+			<tr>
+				<td>
+					Nr. zlecenia <input ng-model="jobFilter.jobId" type="number" min="0" max="99999" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Status
+					<select class="filterSelect" ng-model="jobFilter.status" ng-options="status.name for status in statuses">
+						<option value="">-</option>
+					</select>
+				</td>
+				<td>
+					Typ własny
+					<select class="filterSelect" ng-model="jobFilter.internalType" ng-options="internType.id for internType in internalTypes">
+						<option value="">-</option>
+					</select>
+				</td>
+				<td>
+					Grupa serwisowa
+					<select class="filterSelect" ng-model="jobFilter.serviceGroup" ng-options="srGroup.name for srGroup in serviceGroups">
+						<option value="">-</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<button ng-click="refreshJobs()">Refresh</button>
+				</td>
+			</tr>
+		</table>
+	</div>
+	
+	<div class="tablePanel">
+     	<div class="tableDiv">
+		 	<table class="mainTable">	
+		 		<thead>
+		 			<tr>
+						<th class="head">Id</th>
+						<th class="head">Status</th>					
+						<th class="head">Typ</th>			
+						<th class="head">Rodzaj zadania</th>		 
+						<th class="head">Typ własny</th> 
+						<th class="head">Producent</th>
+						<th class="head">Marka</th>
+						<th class="head">Grupa serwisowa</th>	
+						<th class="head">Utworzone</th>
+						<th class="head">Deadline</th>
+						<th class="head">Kontakt DS z SR</th>
+						<th class="head">Zmodyfikowano</th>
+						<th class="head">Data realizacji</th>
+						<th class="head">Kontakt SR z klientem</th>
+						<th class="head">Wysłano do SR</th>
+						<th class="head">Wizyta SR</th>
+						<th class="head">Miasto</th>
+						<th class="head">Email</th>
+						<th class="head">Nazwa</th>
+						<th class="head">Nip</th>
+						<th class="head">Telefon</th>
+						<th class="head">Kod</th>
+						<th class="head">Region</th>
+						<th class="head">Ulica</th>
+						<th class="head">Nazwisko</th>
+						<th class="head">Nr. klienta</th>
+						<th class="head">Zatwierdzone</th>
+					</tr>	
+				</thead>
+				<tbody>
+					<tr ng-repeat="job in jobs" class="tableRow" ng-click="editJob(job.id)">
+						<td class="cell">{{job.id}}</td>
+						<td class="cell">{{job.status.name}}</td>					
+						<td class="cell">{{job.type.id}}</td>			
+						<td class="cell">{{job.typeGeneral.id}}</td>		 
+						<td class="cell">{{job.typeIntern.id}}</td> 
+						<td class="cell">{{job.manufacturerName}}</td>
+						<td class="cell">{{job.brandName}}</td>
+						<td class="cell">{{job.serviceGroupUser.name}}</td>	
+						<td class="cell">{{job.dateCreate}}</td>
+						<td class="cell">{{job.dateDeadline}}</td>
+						<td class="cell">{{job.dateDsContact}}</td>
+						<td class="cell">{{job.dateModify}}</td>
+						<td class="cell">{{job.dateRealize}}</td>
+						<td class="cell">{{job.dateSrContact}}</td>
+						<td class="cell">{{job.dateSrSend}}</td>
+						<td class="cell">{{job.dateSrVisit}}</td>
+						<td class="cell">{{job.clCity}}</td>
+						<td class="cell">{{job.clEmail}}</td>
+						<td class="cell">{{job.clName}}</td>
+						<td class="cell">{{job.clNip}}</td>
+						<td class="cell">{{job.clPhone}}</td>
+						<td class="cell">{{job.clPostCode}}</td>
+						<td class="cell">{{job.clRegion}}</td>
+						<td class="cell">{{job.clStreet}}</td>
+						<td class="cell">{{job.clSurname}}</td>
+						<td class="cell">{{job.clientNumber}}</td>
+						<td class="cell">{{job.flagAdmApproved}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>

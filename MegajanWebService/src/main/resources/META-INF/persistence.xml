@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+	
+	<persistence-unit name="MegajanWebService" transaction-type="JTA">
+		<jta-data-source>jdbc/MegajanDataSource</jta-data-source>
+		<class>persistence.User</class>
+		<class>persistence.TypeKind</class>
+		<class>persistence.TypeInternal</class>
+		<class>persistence.TypeGeneral</class>
+		<class>persistence.Status</class>
+		<class>persistence.Service</class>
+		<class>persistence.Product</class>
+		<class>persistence.Manufacturer</class>
+		<class>persistence.Job</class>
+		<class>persistence.Brand</class>
+		<class>persistence.Attachment</class>
+		<properties>
+		    <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/megajan_db"/>
+            <property name="javax.persistence.jdbc.user" value="root"/>
+            <property name="javax.persistence.jdbc.password" value="9hope9"/>
+		</properties>
+	</persistence-unit>
+	
+	<persistence-unit name="TestUnmanaged" transaction-type="RESOURCE_LOCAL">
+		<class>persistence.User</class>
+		<class>persistence.TypeKind</class>
+		<class>persistence.TypeInternal</class>
+		<class>persistence.TypeGeneral</class>
+		<class>persistence.Status</class>
+		<class>persistence.Service</class>
+		<class>persistence.Product</class>
+		<class>persistence.Manufacturer</class>
+		<class>persistence.Job</class>
+		<class>persistence.Brand</class>
+		<class>persistence.Attachment</class>
+		<properties>
+		    <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/megajan_db"/>
+            <property name="javax.persistence.jdbc.user" value="root"/>
+            <property name="javax.persistence.jdbc.password" value="9hope9"/>
+		</properties>
+	</persistence-unit>
+	
+</persistence>

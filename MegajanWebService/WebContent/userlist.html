@@ -1,0 +1,23 @@
+	<div class="filterPanel" >	
+		<button ng-click="refreshUsers()">Refresh</button>
+	</div>
+	<div class="tablePanel">
+     	<div class="tableDiv">
+		 	<table class="mainTable">		
+		 		<thead>
+		 			<tr>
+		 				<th class="head">Id</th>
+		 				<th class="head">Nazwa</th>
+		 				<th class="head">Email</th>
+		 			</tr>
+		 		</thead>
+				<tbody>
+					<tr ng-repeat="user in users" class="tableRow">
+						<td class="cell">{{user.id}}</td>
+						<td class="cell">{{user.name}}</td>					
+						<td class="cell">{{user.email}}</td>			
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>

@@ -1,0 +1,86 @@
+<div ng-init="initData()">
+    <p>Zlecenie nr: <b>{{job.id}}</b></p>
+		<table>
+			<tr>
+				<td>	
+					Status
+					<select class="filterSelect" name="status" ng-model="job.status" ng-options="status.name for status in statuses">
+					</select>
+				</td>
+				<td>
+					Typ własny
+					<select class="filterSelect" name="typeIntern" ng-model="job.typeIntern" ng-options="internType.id for internType in internalTypes">
+					</select>
+				</td>
+				<td>
+					Grupa serwisowa
+					<select class="filterSelect" name="serviceGroupUser" ng-model="job.serviceGroupUser" ng-options="srGroup.name for srGroup in serviceGroups">
+						<option value="">-</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				Opis <textarea ng-model="job.description" name="description"></textarea>
+			</tr>
+			<tr>
+				<td>Utworzone<input type="date" name="dateCreate" ng-model="job.dateCreate" ui-date="{ dateFormat: 'yy-mm-dd' }"></input></td>
+			</tr>			
+			<tr>
+				<td>Deadline<input type="date" name="dateDeadline" ng-model="job.dateDeadline" ui-date="{ dateFormat: 'yy-mm-dd' }"></input></td>
+			</tr>
+			<tr>
+				<td>Kontakt DS z klientem<input type="date" name="dateDsContact" ng-model="job.dateDsContact" ui-date="{ dateFormat: 'yy-mm-dd' }"></input></td>
+			</tr>
+			<tr>
+				<td>Modyfikacja<input type="date" name="dateModify" ng-model="job.dateModify" ui-date="{ dateFormat: 'yy-mm-dd' }"></input></td>
+			</tr>
+			<tr>
+				<td>Data realizacji<input type="date" name="dateRealize" ng-model="job.dateRealize" ui-date="{ dateFormat: 'yy-mm-dd' }"></input></td>
+			</tr>
+			<tr>
+				<td>Kontakt SR z klientem<input type="date" name="dateSrContact" ng-model="job.dateSrContact" ui-date="{ dateFormat: 'yy-mm-dd' }"></input></td>
+			</tr>					
+		</table>
+		
+		<p>Data binding test</p>
+		<table>
+			<tr>
+				<td>{{job.id}}</td>
+				<td>{{job.status.name}}</td>					
+				<td>{{job.type.id}}</td>			
+				<td>{{job.typeGeneral.id}}</td>		 
+				<td>{{job.typeIntern.id}}</td> 
+				<td>{{job.manufacturerName}}</td>
+				<td>{{job.brandName}}</td>
+			</tr>
+			<tr>
+				<td>{{job.serviceGroupUser.name}}</td>	
+				<td>{{job.dateCreate}}</td>
+				<td>{{job.dateDeadline}}</td>
+				<td>{{job.dateDsContact}}</td>
+				<td>{{job.dateModify}}</td>
+				<td>{{job.dateRealize}}</td>
+				<td>{{job.dateSrContact}}</td>
+			</tr>
+			<tr>
+				<td>{{job.dateSrSend}}</td>
+				<td>{{job.dateSrVisit}}</td>
+				<td>{{job.clCity}}</td>
+				<td>{{job.clEmail}}</td>
+				<td>{{job.clName}}</td>
+				<td>{{job.clNip}}</td>
+				<td>{{job.clPhone}}</td>
+			</tr>
+			<tr>
+				<td>{{job.clPostCode}}</td>
+				<td>{{job.clRegion}}</td>
+				<td>{{job.clStreet}}</td>
+				<td>{{job.clSurname}}</td>
+				<td>{{job.clientNumber}}</td>
+				<td>{{job.flagAdmApproved}}</td>
+				<td>{{job.description}}</td>
+			</tr>
+		</table>
+</div>
+<a href="#/jobs" class="btn">Zamknij</a>
+<button ng-click="updateJob(job)">Zapisz</button>

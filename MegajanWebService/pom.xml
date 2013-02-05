@@ -1,0 +1,157 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>MegajanWebService</groupId>
+  <artifactId>MegajanWebService</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>war</packaging>
+  <name>ProjectMegajanWebService</name>
+  <build>
+    <sourceDirectory>src</sourceDirectory>
+    <resources>
+      <resource>
+        <directory>src</directory>
+        <excludes>
+          <exclude>**/*.java</exclude>
+        </excludes>
+      </resource>
+    </resources>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.3.2</version>
+        <configuration>
+          <source>1.6</source>
+          <target>1.6</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  
+  <!--  Maven repository -->
+  <repositories>
+    <repository>
+      <id>maven2</id>
+      <url>http://download.java.net/maven/2</url>
+    </repository>
+ </repositories>
+
+  
+  <dependencies>
+  
+    <!--   JUnit  -->
+    <dependency>
+		<groupId>junit</groupId>
+		<artifactId>junit</artifactId>
+		<version>4.10</version>
+		<scope>test</scope>
+	</dependency>
+  	
+  	<!--   Hibernate  -->
+  	<dependency>
+		<groupId>org.hibernate.javax.persistence</groupId>
+		<artifactId>hibernate-jpa-2.0-api</artifactId>
+		<version>1.0.1.Final</version>
+	</dependency>
+  	<dependency>
+		<groupId>org.hibernate</groupId>
+		<artifactId>hibernate-core</artifactId>
+		<version>4.1.7.Final</version>
+	</dependency>
+	<dependency>
+		<groupId>org.hibernate</groupId>
+		<artifactId>hibernate-entitymanager</artifactId>
+		<version>4.1.7.Final</version>
+	</dependency>
+	<dependency>
+	<groupId>org.hibernate</groupId>
+		<artifactId>hibernate-annotations</artifactId>
+		<version>3.5.6-Final</version>
+	</dependency>
+	<dependency>
+		<groupId>org.hibernate</groupId>
+		<artifactId>hibernate-commons-annotations</artifactId>
+		<version>3.3.0.ga</version>
+	</dependency>
+	<dependency>
+		<groupId>org.hibernate</groupId>
+		<artifactId>hibernate-validator</artifactId>
+		<version>4.3.0.Final</version>
+	</dependency>
+	<dependency>
+		<groupId>org.hibernate</groupId>
+		<artifactId>ejb3-persistence</artifactId>
+		<version>1.0.2.GA</version>
+	</dependency>
+	<dependency>
+		<groupId>org.hibernate</groupId>
+		<artifactId>hibernate-ehcache</artifactId>
+		<version>4.1.7.Final</version>
+	</dependency>
+  	
+  	
+  	
+    <!--   Jackson JSON -->
+    <dependency>
+		<groupId>org.codehaus.jackson</groupId>
+		<artifactId>jackson-mapper-asl</artifactId>
+		<version>1.9.9</version>
+	</dependency>
+  	<dependency>
+		<groupId>org.codehaus.jackson</groupId>
+		<artifactId>jackson-core-asl</artifactId>
+		<version>1.9.9</version>
+	</dependency>
+  	
+  	
+  	
+  	<!--   Jersey test framework -->
+  	<dependency>
+  		<groupId>com.sun.jersey.test.framework</groupId>
+  		<artifactId>jersey-test-framework</artifactId>
+  		<version>1.0.3</version>
+  		<scope>compile</scope>
+  	</dependency>
+  	
+  	
+  	
+	<!--   	Glassfish -->
+	<dependency>
+		<groupId>org.glassfish</groupId>
+		<artifactId>javax.ejb</artifactId>
+		<version>3.1.1</version>
+	</dependency>
+	<dependency>
+		<groupId>org.glassfish</groupId>
+		<artifactId>javax.transaction</artifactId>
+		<version>3.1.1</version>
+	</dependency>
+	<dependency>
+		<groupId>org.glassfish</groupId>
+		<artifactId>javax.resource</artifactId>
+		<version>3.1.1</version>
+	</dependency>
+	<dependency>
+		<groupId>org.glassfish</groupId>
+		<artifactId>javax.annotation</artifactId>
+		<version>3.1.1</version>
+	</dependency>
+	<dependency>
+		<groupId>org.glassfish</groupId>
+		<artifactId>javax.servlet</artifactId>
+		<version>3.1.1</version>
+	</dependency>
+	<dependency>
+		<groupId>org.glassfish.jersey</groupId>
+		<artifactId>jax-rs-ri</artifactId>
+		<version>2.0-m08</version>
+	</dependency>
+  	<dependency>
+		<groupId>org.glassfish</groupId>
+		<artifactId>maven-embedded-glassfish-plugin</artifactId>
+		<version>3.1.1</version>
+	</dependency>
+	
+	
+  	
+  </dependencies>
+</project>

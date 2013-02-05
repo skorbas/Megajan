@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html  ng-app="mainModule">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Angular Web Client</title>
+<link rel="stylesheet" href="css/styles.css" type="text/css" />
+<script src="lib/jquery-ui-1.8.21.custom/js/jquery-1.7.2.min.js"></script>
+<script src="lib/jquery-ui-1.8.21.custom/js/jquery-ui-1.8.21.custom.min.js"></script>
+<script src="lib/underscore-min.js"></script>
+<script src="lib/angular-1.0.1.min.js"></script>
+<script src="lib/angular-resource-1.0.1.min.js"></script>
+<script src="lib/angular-ui-angular-ui-3d5c9a6/build/angular-ui.min.js"></script>
+<script src="js/restWebService.js"></script>
+<script src="js/mainModule.js"></script>
+<<link  rel="stylesheet" type="text/css" href="lib/jquery-ui-1.8.21.custom/css/ui-lightness/jquery-ui-1.8.21.custom.css">
+</head>
+	<body ng-controller="CommonDataController">
+		<div class="wrapper">
+			<div class="optionsPanel">
+				<table>
+					<tr>
+						<td><a href="#/jobs">Zlecenia</a></td>
+					</tr>
+					<tr>
+						<td><a href="#/users">Użytkownicy</a></td>
+					</tr>
+				</table>
+			</div>
+			<div class="propertyPanel" ng-view></div>
+		</div>
+	</body>
+</html>
