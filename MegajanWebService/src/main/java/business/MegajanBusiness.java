@@ -2,6 +2,8 @@ package business;
 
 import java.util.List;
 
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaQuery;
 
@@ -122,6 +124,7 @@ public class MegajanBusiness implements MegajanBusinessIf
 	}
 
 	@Override
+	@TransactionAttribute( TransactionAttributeType.REQUIRED )
 	public SystemResponse updateEntity( Object aEntityObj ) 
 	{
 		SystemResponse response = new SystemResponse();
