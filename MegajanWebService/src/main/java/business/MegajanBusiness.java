@@ -124,13 +124,13 @@ public class MegajanBusiness implements MegajanBusinessIf
 	}
 
 	@Override
-	@TransactionAttribute( TransactionAttributeType.REQUIRED )
+	@TransactionAttribute( TransactionAttributeType.REQUIRED ) // transaction declaration when JTA transaction type is used in persistence.xml
 	public SystemResponse updateEntity( Object aEntityObj ) 
 	{
 		SystemResponse response = new SystemResponse();
 		try 
 		{
-			//entityManager.getTransaction().begin();
+			//entityManager.getTransaction().begin(); // should be used when RESOURCE_LOCAL transaction type is used in persistence.xml
 			Object updatedObject = entityManager.merge( aEntityObj );
 			//entityManager.getTransaction().commit();
 		
