@@ -1,10 +1,15 @@
 package business;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
+import javax.annotation.ManagedBean;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaQuery;
 
 import jpautil.JpqlQueryCreator;
@@ -17,20 +22,55 @@ import util.ExceptionUtil;
 /**
  * Session Bean implementation class System
  */
+// Tell the container that this class is container managed
+// A reference to a managed bean can be obtained through resource injection
+@ManagedBean   
 public class MegajanBusiness implements MegajanBusinessIf
 {
-	// EnititManager can be only injected to EJB beans. If this class is annotated e.g. as @Stateless session bean
-	// then GlassFish is not loading it because of security policy. EntityManager is injected in main web service class which 
-	// can annotated as a EJB bean and loaded to Glassfish.
-	//@PersistenceContext( unitName="MegajanWebService" )
+	@PersistenceContext( unitName="MegajanWebService" )
 	private EntityManager entityManager;
+	
+	public static String BIZ_RESULT_OK = "OK";
 
+    public MegajanBusiness(  )
+    {
+    }
+	
 	/**
 	 * Default constructor.
 	 */
     public MegajanBusiness( EntityManager aEntityManager )
     {
     	 entityManager = aEntityManager;
+    }
+    
+    @Override
+    public SystemResponse authenticate( String aUserName, String aPassword )
+    {
+    	SystemResponse resp = new SystemResponse();
+    	
+    	FilterExpression filter = new FilterExpression();
+    	filter.addCondition("name", aUserName );
+    	filter.addCondition("password", md5( aPassword ) ); // converts password to MD5 
+    	
+    	SystemResponse response = getEntities( User.ENTITY_QUALIFIED_NAME, filter, false ); 
+    	
+    	if( response.dataContainer.data != null && 
+    		response.statusInfo.errorMsg.equals( BIZ_RESULT_OK ) )
+    	{
+    		List<User> users = (List<User>)response.dataContainer.data;
+    		if( users.size() > 0 )
+    		{
+    			// user exists so return its ID to the client (needed for further business calls)
+    			response.dataContainer.data = users.get( 0 ).getId();
+    		}
+    	}
+    	else if( response.statusInfo.errorMsg.equals( BIZ_RESULT_OK ) )
+    	{
+    		resp.dataContainer.data = "Ivalid user or password. Authentication failed.";
+    	}
+    	
+    	return response;
     }
  
 	@Override
@@ -49,7 +89,7 @@ public class MegajanBusiness implements MegajanBusinessIf
 				}
 			}
 			response.dataContainer.data = entityList;
-			response.statusInfo.errorMsg = "OK";
+			response.statusInfo.errorMsg = BIZ_RESULT_OK;
 		}
 		catch( Exception ex )
 		{
@@ -135,7 +175,7 @@ public class MegajanBusiness implements MegajanBusinessIf
 			//entityManager.getTransaction().commit();
 		
 			response.dataContainer.data = updatedObject;
-			response.statusInfo.errorMsg = "OK";
+			response.statusInfo.errorMsg = BIZ_RESULT_OK;
 		}
 		catch( Exception ex )
 		{
@@ -187,4 +227,32 @@ public class MegajanBusiness implements MegajanBusinessIf
 			}
 		}
 	}
+	
+	/**
+	 * Converts password to MD5 representation.
+	 * @param aPassword
+	 * @return
+	 */
+	private String md5( String aPassword )
+	{
+        String md5Pasword = null;
+
+        try
+        {    
+	        //Create MessageDigest object for MD5
+	        MessageDigest digest = MessageDigest.getInstance("MD5");
+	         
+	        //Update input string in message digest
+	        digest.update( aPassword.getBytes(), 0, aPassword.length());
+	 
+	        //Converts message digest value in base 16 (hex)
+	        md5Pasword = new BigInteger(1, digest.digest()).toString(16);
+ 
+        }
+        catch (NoSuchAlgorithmException e)
+        {
+            e.printStackTrace();
+        }
+        return md5Pasword;
+    }
 }

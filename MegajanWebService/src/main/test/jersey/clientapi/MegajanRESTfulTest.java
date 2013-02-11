@@ -16,6 +16,7 @@ import persistence.Job;
 import persistence.Status;
 import util.JsonMapperUtil;
 import business.EntityUpdateInfo;
+import business.MegajanBusiness;
 import business.SystemResponse;
 
 import com.sun.jersey.api.client.Client;
@@ -24,7 +25,7 @@ import com.sun.jersey.api.client.WebResource;
 
 public class MegajanRESTfulTest extends TestCase
 {
-	private GlassFish glassfish;
+	//private GlassFish glassfish;
 	private String serviceUrl = "http://localhost:8080/MegajanWebService/jaxrs/system/";
 	
 	private final String TESTED_JOB_ID = "1822";
@@ -67,6 +68,28 @@ public class MegajanRESTfulTest extends TestCase
  	    assertEquals("test ok!!!", response.getEntity( String.class ) );
  	    
  	   response.close();
+    } 
+    
+    @Test 
+    public void testAuthenticate() throws Exception
+    {
+	    Client c = Client.create();
+	    WebResource megajanServiceRes = c.resource( serviceUrl );
+	    
+	    String user    = "Megajan";
+	    String pasword = "Megajan";
+	    
+	    ClientResponse response = megajanServiceRes.path("authenticate")
+	    		.queryParam("user", user )
+	    		.queryParam("password", pasword).get( ClientResponse.class );
+	    
+	    assertEquals( 200, response.getStatus() );
+	    
+	    SystemResponse sysResponse = (SystemResponse)JsonMapperUtil.json2JavaObject( response.getEntity(String.class), SystemResponse.class );
+	    
+	    assertEquals( MegajanBusiness.BIZ_RESULT_OK, sysResponse.statusInfo.errorMsg ); 
+	    
+	    response.close();
     } 
     
    @Test 

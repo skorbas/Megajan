@@ -2,8 +2,7 @@ package service;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -42,11 +41,9 @@ public class MegajanRESTfulService
     private static final String JSON_UNDEFINED = "undefined";
     private static final String NULL_VALUE = "null";
     
-    // Injection of entity manager (via PersistenceContext)is possible only within classes annotated as EJB beans
-    // otherwise it has to be created via EntityManagerFactory...
-	@PersistenceContext( unitName="MegajanWebService" )
-	private EntityManager entityManager;
-    
+    // Injection of MegajanBusinessIf is possible because MegajnaBusiness is annotated as @ManagedBean 
+    @Inject
+    private MegajanBusinessIf system;
     
     /**
      * Default constructor. 
@@ -64,6 +61,18 @@ public class MegajanRESTfulService
         return "test ok!!!";
     }
     
+    
+	@GET
+	@Path("/authenticate")
+	@Produces( MediaType.APPLICATION_JSON )
+	public byte[] authenticate( @QueryParam("user") String aUser, 
+			                    @QueryParam("password") String aPassword )
+	{
+    	SystemResponse resp =  system.authenticate( aUser, aPassword );
+    	
+    	return JsonMapperUtil.java2JsonObj( SystemResponse.class, resp );
+	}
+    
 	@GET
 	@Path("/getJobs")
 	@Produces( MediaType.APPLICATION_JSON )
@@ -73,8 +82,6 @@ public class MegajanRESTfulService
 						   @DefaultValue(JSON_UNDEFINED) @QueryParam("serviceGroup") String serviceGroupJson,
 						   @DefaultValue("false") @QueryParam("loadLazy") boolean loadLazy )
 	{
-		MegajanBusinessIf system = new MegajanBusiness(entityManager);
-	
 		//Jackson JSON parser accepts data only in UTF-8 format so the parameters have to be converted to UTF-8
 		statusJson = new String(JsonStringEncoder.getInstance().encodeAsUTF8(statusJson));
 		typeInternJson = new String(JsonStringEncoder.getInstance().encodeAsUTF8(typeInternJson));
@@ -120,7 +127,6 @@ public class MegajanRESTfulService
 	@Produces( MediaType.APPLICATION_JSON )
 	public byte[] getStatuses( )
 	{ 	
-    	MegajanBusinessIf system = new MegajanBusiness(entityManager);
     	SystemResponse resp = system.getEntities( Status.ENTITY_QUALIFIED_NAME, null, false );
 
     	return JsonMapperUtil.java2JsonObj( SystemResponse.class, resp );
@@ -131,7 +137,6 @@ public class MegajanRESTfulService
 	@Produces( MediaType.APPLICATION_JSON )
 	public byte[] getInternalTypes( )
 	{
-		MegajanBusinessIf system = new MegajanBusiness(entityManager);
 		SystemResponse resp = system.getEntities( TypeInternal.ENTITY_QUALIFIED_NAME, null, false );
 		
 		return JsonMapperUtil.java2JsonObj( SystemResponse.class, resp );
@@ -142,8 +147,6 @@ public class MegajanRESTfulService
 	@Produces( MediaType.APPLICATION_JSON )
 	public byte[] getServiceGroups( )
 	{
-		MegajanBusinessIf system = new MegajanBusiness(entityManager);
-	
     	FilterExpression filter = new FilterExpression();
     	filter.addCondition("type", new Integer(3) );
     		
@@ -157,7 +160,7 @@ public class MegajanRESTfulService
 	@Produces( MediaType.APPLICATION_JSON )
 	public byte[] getUsers( )
 	{
-    	MegajanBusinessIf system = new MegajanBusiness(entityManager);
+    	//MegajanBusinessIf system = new MegajanBusiness(entityManager);
     	SystemResponse resp =  system.getEntities( User.ENTITY_QUALIFIED_NAME, null, false );
     	
     	return JsonMapperUtil.java2JsonObj( SystemResponse.class, resp );
@@ -175,7 +178,6 @@ public class MegajanRESTfulService
     public byte[] putJsonEntity( String jsonData ) //@QueryParam("entityQn") String entityQualifiedName ) 
     {
     	SystemResponse resp = null;
-    	MegajanBusinessIf system = new MegajanBusiness(entityManager);
     	
 		//Jackson JSON parser accepts data only in UTF-8 format so the parameters have to be converted to UTF-8
 		jsonData = new String(JsonStringEncoder.getInstance().encodeAsUTF8( jsonData ));

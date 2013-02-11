@@ -31,7 +31,17 @@ public interface MegajanBusinessIf
 	 * Updates existing entity in database.
 	 * @param aEntityQn
 	 * @param aEntityObj
-	 * @return system response object containing data and detailed system respone
+	 * @return system response object containing data and detailed system response.
 	 */
 	public SystemResponse updateEntity( Object aEntityObj );
+	
+	
+	/**
+	 * Checks if user/password exists within system and then return valid user ID for further use by the client application.
+	 * User ID is needed to call other services from MegajanBusiness.
+	 * @param aUserName
+	 * @param aPassword
+	 * @return
+	 */
+	public SystemResponse authenticate( String aUserName, String aPassword );
 }

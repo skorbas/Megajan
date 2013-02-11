@@ -2,9 +2,8 @@ package unmanaged;
 
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
 import junit.framework.TestCase;
 
@@ -16,6 +15,8 @@ import org.junit.Test;
 
 import persistence.Job;
 import persistence.Product;
+import util.EmProducer;
+import util.MyEm;
 import business.FilterExpression;
 import business.MegajanBusiness;
 import business.MegajanBusinessIf;
@@ -32,9 +33,17 @@ import business.SystemResponse;
  */
 public class BusinessUnmanagedTest extends TestCase
 {
-	private final String PERSISTENCE_UNIT = "TestUnmanaged";
+	public final String PERSISTENCE_UNIT = "TestUnmanaged";
+	
+	/**
+	 * @MyEm annotation is used to differentiate how EntityManager should be injected. see class 'EmProducer'. 
+	 */
+	@Inject @MyEm
 	private EntityManager entityManager;
+	
 	private MegajanBusinessIf megajanBiz;
+	
+	
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -49,8 +58,8 @@ public class BusinessUnmanagedTest extends TestCase
 	{
 		super.setUp();
 
-		EntityManagerFactory emFactory = Persistence.createEntityManagerFactory( PERSISTENCE_UNIT );
-		entityManager = emFactory.createEntityManager();
+		//EntityManagerFactory emFactory = Persistence.createEntityManagerFactory( PERSISTENCE_UNIT );
+		//entityManager = emFactory.createEntityManager();
 		megajanBiz = new MegajanBusiness( entityManager );
 	}
 
