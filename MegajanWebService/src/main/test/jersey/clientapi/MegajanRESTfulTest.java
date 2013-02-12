@@ -76,8 +76,9 @@ public class MegajanRESTfulTest extends TestCase
 	    Client c = Client.create();
 	    WebResource megajanServiceRes = c.resource( serviceUrl );
 	    
-	    String user    = "Megajan";
-	    String pasword = "Megajan";
+	    // first check valid user credentials - expected result: BIZ_RESULT_OK
+	    String user    = "megajan";
+	    String pasword = "megajan";
 	    
 	    ClientResponse response = megajanServiceRes.path("authenticate")
 	    		.queryParam("user", user )
@@ -86,8 +87,35 @@ public class MegajanRESTfulTest extends TestCase
 	    assertEquals( 200, response.getStatus() );
 	    
 	    SystemResponse sysResponse = (SystemResponse)JsonMapperUtil.json2JavaObject( response.getEntity(String.class), SystemResponse.class );
-	    
 	    assertEquals( MegajanBusiness.BIZ_RESULT_OK, sysResponse.statusInfo.errorMsg ); 
+	    
+	    
+	    // next check invalid user credentials - expected result: BIZ_RESULT_FAILED
+	    user    = "FALSE_User";
+	    pasword = "megajan";
+	    
+	    response = megajanServiceRes.path("authenticate")
+	    		.queryParam("user", user )
+	    		.queryParam("password", pasword).get( ClientResponse.class );
+	    
+	    assertEquals( 200, response.getStatus() );
+	    
+	    sysResponse = (SystemResponse)JsonMapperUtil.json2JavaObject( response.getEntity(String.class), SystemResponse.class );
+	    assertEquals( MegajanBusiness.BIZ_RESULT_FAILED, sysResponse.statusInfo.errorMsg ); 
+	    
+	    
+	    // next check invalid password credentials - expected result: BIZ_RESULT_FAILED
+	    user    = "megajan";
+	    pasword = "FALSE_Password";
+	    
+	    response = megajanServiceRes.path("authenticate")
+	    		.queryParam("user", user )
+	    		.queryParam("password", pasword).get( ClientResponse.class );
+	    
+	    assertEquals( 200, response.getStatus() );
+	    
+	    sysResponse = (SystemResponse)JsonMapperUtil.json2JavaObject( response.getEntity(String.class), SystemResponse.class );
+	    assertEquals( MegajanBusiness.BIZ_RESULT_FAILED, sysResponse.statusInfo.errorMsg ); 
 	    
 	    response.close();
     } 
@@ -143,12 +171,6 @@ public class MegajanRESTfulTest extends TestCase
 	    euInfo.entityObj = aEntityObj;
 	    String euInfoJsonString = new String( JsonMapperUtil.java2JsonObj( euInfo.getClass(), euInfo ) );
 	        
-//	    String jsonJob = new String( JsonMapperUtil.java2JsonObj( aEntityObj.getClass(), aEntityObj ) );
-//	    ObjectNode objNode = new ObjectNode( JsonNodeFactory.instance );
-//	    objNode.put( "entityQn", aEntityQualifiedName );
-//	    objNode.put( "entityObj",  jsonJob );
-//	    String jsonStringData = objNode.toString();
-	     		
 	    //update entity
 	    ClientResponse response = megajanServiceRes.path( "putJsonEntity" )
 	    		.accept( MediaType.APPLICATION_JSON )
@@ -157,6 +179,8 @@ public class MegajanRESTfulTest extends TestCase
 	    		.put( ClientResponse.class ) ;//, euInfoJsonString );
 
 	    assertEquals( 200, response.getStatus() );
+	    SystemResponse sysResponse = (SystemResponse)JsonMapperUtil.json2JavaObject( response.getEntity(String.class), SystemResponse.class );
+	    assertEquals( MegajanBusiness.BIZ_RESULT_OK, sysResponse.statusInfo.errorMsg ); 
 	    
 	    response.close();
    }

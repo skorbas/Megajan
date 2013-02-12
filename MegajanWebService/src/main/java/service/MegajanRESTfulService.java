@@ -180,7 +180,7 @@ public class MegajanRESTfulService
     	SystemResponse resp = null;
     	
 		//Jackson JSON parser accepts data only in UTF-8 format so the parameters have to be converted to UTF-8
-		jsonData = new String(JsonStringEncoder.getInstance().encodeAsUTF8( jsonData ));
+		//jsonData = new String(JsonStringEncoder.getInstance().encodeAsUTF8( jsonData ));
 		
 		// test
 		ObjectMapper jsonMapper = new ObjectMapper(); 
@@ -192,6 +192,7 @@ public class MegajanRESTfulService
 			
 			String entityQn = jsonEntityQnNode.getTextValue();//.toString(); <- can't be toString it doesn't convert properly simple string value
 			String entityObject = jsonEntityObjectNode.toString();
+			entityObject = new String(JsonStringEncoder.getInstance().encodeAsUTF8( entityObject ));
 			
 			Object entityObj = JsonMapperUtil.json2JavaObjectNoCatch( entityObject.getBytes(), entityQn );
 			

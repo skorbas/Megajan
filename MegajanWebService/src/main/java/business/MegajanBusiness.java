@@ -30,7 +30,8 @@ public class MegajanBusiness implements MegajanBusinessIf
 	@PersistenceContext( unitName="MegajanWebService" )
 	private EntityManager entityManager;
 	
-	public static String BIZ_RESULT_OK = "OK";
+	public static String BIZ_RESULT_OK     = "OK";
+	public static String BIZ_RESULT_FAILED = "FAILED";
 
     public MegajanBusiness(  )
     {
@@ -46,28 +47,31 @@ public class MegajanBusiness implements MegajanBusinessIf
     
     @Override
     public SystemResponse authenticate( String aUserName, String aPassword )
-    {
-    	SystemResponse resp = new SystemResponse();
-    	
+    {   	
     	FilterExpression filter = new FilterExpression();
     	filter.addCondition("name", aUserName );
     	filter.addCondition("password", md5( aPassword ) ); // converts password to MD5 
     	
     	SystemResponse response = getEntities( User.ENTITY_QUALIFIED_NAME, filter, false ); 
     	
-    	if( response.dataContainer.data != null && 
-    		response.statusInfo.errorMsg.equals( BIZ_RESULT_OK ) )
+    	if( response.statusInfo.errorMsg.equals( BIZ_RESULT_OK ) && 
+    		response.dataContainer.data != null )
     	{
     		List<User> users = (List<User>)response.dataContainer.data;
     		if( users.size() > 0 )
     		{
     			// user exists so return its ID to the client (needed for further business calls)
     			response.dataContainer.data = users.get( 0 ).getId();
+    			return response;
     		}
     	}
-    	else if( response.statusInfo.errorMsg.equals( BIZ_RESULT_OK ) )
+    	
+    	if( response.statusInfo.errorMsg.equals( BIZ_RESULT_OK ) )
     	{
-    		resp.dataContainer.data = "Ivalid user or password. Authentication failed.";
+    		// if no entries were found change response status to BIZ_RESULT_FAILED 
+    		response.statusInfo.errorMsg = BIZ_RESULT_FAILED;
+    		response.dataContainer.data = "Ivalid user or password. Authentication failed.";
+    		return response;
     	}
     	
     	return response;
@@ -94,8 +98,8 @@ public class MegajanBusiness implements MegajanBusinessIf
 		catch( Exception ex )
 		{
 			// in case of error save stack trace in response object to make it diagnosable on client site
-			response.dataContainer.data = null;
-			response.statusInfo.errorMsg = ExceptionUtil.getStackTraceAsString( ex );
+			response.dataContainer.data = ExceptionUtil.getStackTraceAsString( ex );
+			response.statusInfo.errorMsg = BIZ_RESULT_FAILED; 
 		}
 		return response;
 	}
@@ -170,9 +174,7 @@ public class MegajanBusiness implements MegajanBusinessIf
 		SystemResponse response = new SystemResponse();
 		try 
 		{
-			//entityManager.getTransaction().begin(); // should be used when RESOURCE_LOCAL transaction type is used in persistence.xml
 			Object updatedObject = entityManager.merge( aEntityObj );
-			//entityManager.getTransaction().commit();
 		
 			response.dataContainer.data = updatedObject;
 			response.statusInfo.errorMsg = BIZ_RESULT_OK;
@@ -180,8 +182,8 @@ public class MegajanBusiness implements MegajanBusinessIf
 		catch( Exception ex )
 		{
 			// in case of error save stack trace in response object to make it diagnosable on client site
-			response.dataContainer.data = null;
-			response.statusInfo.errorMsg = ExceptionUtil.getStackTraceAsString( ex );
+			response.dataContainer.data = ExceptionUtil.getStackTraceAsString( ex );
+			response.statusInfo.errorMsg = BIZ_RESULT_FAILED;  
 			ex.printStackTrace();
 		}	
 		
