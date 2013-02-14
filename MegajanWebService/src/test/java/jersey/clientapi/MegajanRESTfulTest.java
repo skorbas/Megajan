@@ -1,5 +1,6 @@
 package jersey.clientapi;
 
+import java.io.File;
 import java.net.URI;
 import java.util.List;
 
@@ -7,9 +8,11 @@ import javax.ws.rs.core.MediaType;
 
 import junit.framework.TestCase;
 
-import org.codehaus.jackson.node.JsonNodeFactory;
-import org.codehaus.jackson.node.ObjectNode;
+import org.glassfish.embeddable.BootstrapProperties;
+import org.glassfish.embeddable.Deployer;
 import org.glassfish.embeddable.GlassFish;
+import org.glassfish.embeddable.GlassFishProperties;
+import org.glassfish.embeddable.GlassFishRuntime;
 import org.junit.Test;
 
 import persistence.Job;
@@ -25,9 +28,9 @@ import com.sun.jersey.api.client.WebResource;
 
 public class MegajanRESTfulTest extends TestCase
 {
-	//private GlassFish glassfish;
+	private GlassFish glassfish;
+	private GlassFishRuntime runtime;
 	private String serviceUrl = "http://localhost:8080/MegajanWebService/jaxrs/system/";
-	
 	private final String TESTED_JOB_ID = "1822";
 	
 	@Override
@@ -37,24 +40,34 @@ public class MegajanRESTfulTest extends TestCase
 		
 		URI baseURI =  new URI( serviceUrl );
 		
-        // Start Glassfish
-//        glassfish = new GlassFish( baseURI.getPort());
-//        
-//        // Deploy Glassfish referencing the web.xml
-//        ScatteredWar war = new ScatteredWar(BASE_URI.getRawPath(), new File("src/main/webapp"),
-//            new File("src/main/webapp/WEB-INF/web.xml"),
-//            Collections.singleton( new File("target/classes").toURI().toURL()));
-//        
-//        glassfish.deploy(war);
-//        
+		// start embedded Glassfish server
+		BootstrapProperties bootstrapProperties = new BootstrapProperties();
+	    bootstrapProperties.setInstallRoot( "C:\\glassfish3\\glassfish" );    
+	    runtime = GlassFishRuntime.bootstrap( bootstrapProperties );
+		
+	    GlassFishProperties glassfishProperties = new GlassFishProperties();
+	    glassfishProperties.setInstanceRoot( "C:\\glassfish3\\glassfish\\domains\\megajan" );
+	    glassfish = runtime.newGlassFish( glassfishProperties );
+	    
+	    glassfish.start();
+	    
+	    // deploy web application to Glassfish
+	    File war = new File( "C:\\Users\\skorbas\\git\\skorbas\\Megajan\\MegajanWebService\\target\\MegajanWebService-0.0.1-SNAPSHOT.war" );
+	    Deployer deployer = glassfish.getDeployer();
+	    deployer.deploy(war, "--name=simple", "--contextroot=simple", "--force=true"); // deployer.deploy(war) can be invoked instead. Other parameters are optional.
 	}
 	
     @Override
-   protected void tearDown() throws Exception
-   {
-        super.tearDown();
-        //glassfish.stop();
-   }
+    protected void tearDown() throws Exception
+    {
+         super.tearDown();
+        
+         // stop embedded Glassfish 
+         glassfish.dispose();
+         glassfish.stop();
+         runtime.shutdown();
+         
+    }
    
     
     @Test 

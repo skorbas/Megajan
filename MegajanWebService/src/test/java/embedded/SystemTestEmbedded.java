@@ -1,23 +1,24 @@
 package embedded;
 
+import java.io.File;
 import java.util.List;
 import java.util.Properties;
 
 import javax.ejb.embeddable.EJBContainer;
 import javax.naming.Context;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
 import junit.framework.TestCase;
 
+import org.glassfish.embeddable.Deployer;
+import org.glassfish.embeddable.GlassFish;
+import org.glassfish.embeddable.GlassFishProperties;
+import org.glassfish.embeddable.GlassFishRuntime;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import com.sun.enterprise.config.serverbeans.WebContainer;
 
 import persistence.Job;
 import persistence.Product;
@@ -25,6 +26,7 @@ import business.FilterExpression;
 import business.MegajanBusiness;
 import business.MegajanBusinessIf;
 import business.SystemResponse;
+
 
 /**
  * Perform unit tests using GLassfish embedded container.
@@ -50,7 +52,8 @@ public class SystemTestEmbedded extends TestCase
 	@Before
 	public void setUp() throws Exception 
 	{
-		super.setUp();
+		super.setUp();	
+		
 		// Using the EJB 3.1 Embeddable API with Embedded GlassFish Server for Unit-Testing
 		
 		/*

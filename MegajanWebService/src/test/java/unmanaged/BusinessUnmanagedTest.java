@@ -15,7 +15,6 @@ import org.junit.Test;
 
 import persistence.Job;
 import persistence.Product;
-import util.EmProducer;
 import util.MyEm;
 import business.FilterExpression;
 import business.MegajanBusiness;

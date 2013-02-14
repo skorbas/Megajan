@@ -4,7 +4,7 @@
   <artifactId>MegajanWebService</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>war</packaging>
-  <name>ProjectMegajanWebService</name>
+  <name>MegajanWebService</name>
   <build>
     <sourceDirectory>src</sourceDirectory>
     <resources>
@@ -31,22 +31,23 @@
            <artifactId>maven-embedded-glassfish-plugin</artifactId>
            <version>3.1</version>
        
-	       <configuration>
-	          <goalPrefix>embedded-glassfish</goalPrefix>
-	          <app>target/MegajanWebService-0.0.1-SNAPSHOT</app>
-	          <port>8080</port> 
-	          <contextRoot>test</contextRoot> 
-	          <autoDelete>true</autoDelete>
-	       </configuration>
-	       <executions>
-	          <execution>
-	             <phase>install</phase>
-	             <goals>
-	                   <goal>run</goal>
-	             </goals>
-	          </execution>
-	       </executions>
-	       </plugin>
+<!-- 	       <configuration> -->
+<!-- 	          <goalPrefix>embedded-glassfish</goalPrefix> -->
+<!-- 	          <app>target/MegajanWebService-0.0.1-SNAPSHOT</app> -->
+<!-- 	          <port>8080</port>  -->
+<!-- 	          <contextRoot>test</contextRoot>  -->
+<!-- 	          <autoDelete>true</autoDelete> -->
+<!-- 	       </configuration> -->
+<!-- 	       <executions> -->
+<!-- 	          <execution> -->
+<!-- 	             <phase>install</phase> -->
+<!-- 	             <goals> -->
+<!--  	                   <goal>run</goal> -->
+<!--  	                   <goal>stop</goal> -->
+<!-- 	             </goals> -->
+<!-- 	          </execution> -->
+<!-- 	       </executions> -->
+	   </plugin>
        <!--  -->
       
     </plugins>
@@ -189,6 +190,12 @@
 		<artifactId>maven-embedded-glassfish-plugin</artifactId>
 		<version>3.1.1</version>
 	</dependency>
+	<dependency>
+		<groupId>org.glassfish.main.extras</groupId>
+		<artifactId>glassfish-embedded-static-shell</artifactId>
+		<version>3.1.2</version>
+	</dependency>
+
 	
     <!-- 	Dependency to CDI implementation -->
 	<dependency>
